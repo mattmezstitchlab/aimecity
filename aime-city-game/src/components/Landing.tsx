@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ART, DISTRICTS, MOODS, PROS, RADIO_STATIONS } from "@/lib/data";
+import { ART, DISTRICTS, MOODS, PROS } from "@/lib/data";
 import { daysUntil, doneMissions, euro, formatDate, progressPercent } from "@/lib/engine";
 import { usePrefs } from "@/lib/prefs";
 import { useAime } from "@/lib/store";
@@ -41,8 +41,10 @@ export default function Landing() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={ART.hero} alt="Un couple sur une terrasse face à AIME® CITY au coucher du soleil" className="h-full w-full object-cover" />
         </div>
-        <div className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(0,0,0,0.72)_0%,rgba(0,0,0,0.55)_38%,rgba(0,0,0,0.96)_82%)]" />
-        <div className="grain absolute inset-0 -z-10 opacity-35" />
+        {/* Le visuel reste apparent : seul un léger vignettage du haut et du bas
+            garde le texte lisible, sans voile noir sur la photo. */}
+        <div className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(0,0,0,0.24)_0%,rgba(0,0,0,0)_30%,rgba(0,0,0,0)_55%,rgba(0,0,0,0.36)_100%)]" />
+        <div className="grain absolute inset-0 -z-10 opacity-10" />
 
         <header className="safe-t flex items-center justify-between gap-3 px-5 pt-4">
           <div className="flex items-center gap-3">
@@ -50,58 +52,58 @@ export default function Landing() {
               <Icon name="heart" size={24} />
             </span>
             <div>
-              <p className="title-3 tracking-[0.08em]">AIME® CITY</p>
-              <p className="kicker">Love is an open world</p>
+              <p className="title-3 tracking-[0.08em] hero-text-shadow">AIME® CITY</p>
+              <p className="kicker hero-text-shadow">Love is an open world</p>
             </div>
           </div>
-          <span className="chip">Sans inscription</span>
+          <span className="chip hero-ghost">Sans inscription</span>
         </header>
 
-        <div className="flex flex-1 flex-col justify-end px-5 pb-8 pt-16 sm:px-10">
-          <div className="rise max-w-3xl">
-            <h1 className="title-hero">
+        <div className="flex flex-1 flex-col items-center justify-end px-5 pb-8 pt-16 text-center sm:px-10">
+          <div className="rise mx-auto max-w-3xl">
+            <h1 className="title-hero hero-text-shadow">
               AIME<sup className="align-top text-[0.3em] text-white">®</sup>
-              <span className="text-white block">CITY</span>
+              <span className="block">CITY</span>
             </h1>
-            <p className="mt-4 max-w-xl text-[1.0625rem] leading-relaxed text-cream/85 sm:text-[1.25rem]">
-              Les mariés sont les protagonistes, les prestataires sont les personnages, les préparatifs sont les missions.
+            <p className="hero-text-shadow mx-auto mt-4 max-w-xl text-[1.0625rem] leading-relaxed text-cream/90 sm:text-[1.25rem]">
+              Les mariés sont les héros, les préparatifs sont les missions.
               <span className="text-cream"> Le mariage est l&apos;aventure.</span>
             </p>
           </div>
 
-          <div className="mt-12 grid gap-3 sm:max-w-xl">
+          <div className="mx-auto mt-10 grid w-full max-w-xl gap-3">
             <button
               type="button"
               onClick={() => {
                 haptic("tap");
                 setOnboarding(true);
               }}
-              className="btn btn-lg btn-light w-full justify-between gap-4 !min-h-[84px] !px-6 text-left"
+              className="btn btn-lg btn-light hero-cta relative w-full !min-h-[84px] !px-6 text-center"
             >
-              <span className="min-w-0">
-                <span className="block text-[0.75rem] font-semibold uppercase tracking-[0.18em] opacity-55">01 — Commencer</span>
-                <span className="title-2 mt-1 block">Nouvelle histoire</span>
-                <span className="mt-1 block text-[0.9375rem] opacity-65">Prénoms, date, lieu, invités, budget</span>
-              </span>
-              <Icon name="arrowRight" size={26} className="shrink-0" />
+              <span className="block text-[0.75rem] font-semibold uppercase tracking-[0.18em] opacity-55">01 — Commencer</span>
+              <span className="title-2 mt-1 block">Nouvelle histoire</span>
+              <span className="mt-1 block text-[0.9375rem] opacity-65">Prénoms, date, lieu, budget</span>
+              <Icon name="arrowRight" size={26} className="absolute right-5 top-1/2 hidden -translate-y-1/2 shrink-0 sm:block" />
             </button>
 
             <button
               type="button"
               disabled={!hydrated || !savedStory}
               onClick={() => savedStory && resumeStory()}
-              className="btn btn-lg btn-ghost w-full justify-between gap-4 !min-h-[84px] !px-6 text-left"
+              className="btn btn-lg btn-ghost hero-ghost hero-cta relative w-full !min-h-[84px] !px-6 text-center"
             >
-              <span className="min-w-0">
-                <span className="kicker">02 — Reprendre</span>
-                <span className="title-2 mt-1 block">Continuer mon histoire</span>
-                <span className="meta mt-0.5 block truncate">
-                  {savedStory
-                    ? `${savedStory.wedding.partnerA} & ${savedStory.wedding.partnerB} · ${progressPercent(savedStory)}%`
-                    : "Aucune partie sauvegardée"}
-                </span>
+              <span className="kicker">02 — Reprendre</span>
+              <span className="title-2 mt-1 block">Continuer mon histoire</span>
+              <span className="meta mt-0.5 block">
+                {savedStory
+                  ? `${savedStory.wedding.partnerA} & ${savedStory.wedding.partnerB} · ${progressPercent(savedStory)}%`
+                  : "Aucune partie sauvegardée"}
               </span>
-              <Icon name={savedStory ? "arrowRight" : "lock"} size={28} className="shrink-0 text-cream/60" />
+              <Icon
+                name={savedStory ? "arrowRight" : "lock"}
+                size={28}
+                className="absolute right-5 top-1/2 hidden -translate-y-1/2 shrink-0 text-cream/60 sm:block"
+              />
             </button>
 
             <button
@@ -110,17 +112,15 @@ export default function Landing() {
                 haptic("tap");
                 exploreFreely();
               }}
-              className="btn btn-lg btn-ghost w-full justify-between gap-4 !min-h-[84px] !px-6 text-left"
+              className="btn btn-lg btn-ghost hero-ghost hero-cta relative w-full !min-h-[84px] !px-6 text-center"
             >
-              <span className="min-w-0">
-                <span className="kicker">03 — Sans contrainte</span>
-                <span className="title-2 mt-1 block">Explorer librement</span>
-                <span className="meta mt-0.5 block">Entrer dans la ville et toucher les personnages</span>
-              </span>
-              <Icon name="world" size={28} className="shrink-0 text-cream/60" />
+              <span className="kicker">03 — Sans contrainte</span>
+              <span className="title-2 mt-1 block">Explorer librement</span>
+              <span className="meta mt-0.5 block">La ville et ses personnages</span>
+              <Icon name="world" size={28} className="absolute right-5 top-1/2 hidden -translate-y-1/2 shrink-0 text-cream/60 sm:block" />
             </button>
 
-            <button type="button" onClick={() => startDemo()} className="btn btn-lg btn-ghost">
+            <button type="button" onClick={() => startDemo()} className="btn btn-lg btn-ghost hero-ghost w-full justify-center">
               <Icon name="play" size={22} /> Partie démo · Camille &amp; Gabriel
             </button>
           </div>
@@ -143,32 +143,30 @@ export default function Landing() {
       </section>
 
       <section className="section px-5 sm:px-10">
-        <p className="kicker">Le manifeste</p>
         <h2 className="title-1 mt-4 max-w-3xl">
-          On ne joue plus pour s&apos;échapper de la réalité. <span className="text-white/45">On joue pour la construire.</span>
+          On joue pour <span className="text-white/45">construire la réalité.</span>
         </h2>
         <p className="body-lg mt-6 max-w-2xl">
-          Un moteur narratif pour votre mariage — et demain pour vos festivals, anniversaires, voyages et projets artistiques.
+          Un moteur narratif pour votre mariage.
         </p>
         <div className="mt-10 grid gap-3 sm:grid-cols-3">
         {[
-          { icon: "world" as const, title: "Un monde, pas un formulaire", text: "12 quartiers illustrés, 113 métiers, une carte qui s'illumine à chaque décision." },
-          { icon: "crew" as const, title: `${PROS.length} personnages à recruter`, text: "Saxophoniste, photographe, fleuriste, officiante… Comparez et composez votre équipe." },
-          { icon: "aria" as const, title: "ARIA veille sur tout", text: `Budget vivant, conflits horaires, métiers manquants et ${RADIO_STATIONS.length} univers radio.` },
+          { icon: "world" as const, title: "Un monde, pas un formulaire", },
+          { icon: "crew" as const, title: `${PROS.length} personnages à recruter`, },
+          { icon: "aria" as const, title: "ARIA veille sur tout", },
         ].map((pillar) => (
           <article key={pillar.title} className="glass-soft p-7">
             <span className="grid h-12 w-12 place-items-center rounded-full border border-[rgba(255,255,255,0.18)] text-white">
               <Icon name={pillar.icon} size={22} />
             </span>
             <h3 className="title-3 mt-6">{pillar.title}</h3>
-            <p className="mt-3 text-[1rem] leading-relaxed text-white/65">{pillar.text}</p>
           </article>
         ))}
         </div>
       </section>
 
       <footer className="safe-b px-5 pb-8 text-[0.875rem] leading-relaxed text-cream/45 sm:px-10">
-        AIME® CITY · Love is an open world · personnages, tarifs et disponibilités fictifs · sauvegarde locale, aucun compte requis.
+        AIME® CITY · Love is an open world · tout est fictif · sauvegarde locale, sans compte.
       </footer>
 
       <Sheet
@@ -234,7 +232,7 @@ export default function Landing() {
             </div>
           </div>
           <label className="block">
-            <span className="label">Une phrase pour votre histoire (optionnel)</span>
+            <span className="label">Votre phrase (optionnel)</span>
             <textarea className="field" value={form.note} onChange={(event) => setForm({ ...form, note: event.target.value })} placeholder="Ce qui rend cette journée unique…" />
           </label>
 
@@ -250,8 +248,7 @@ export default function Landing() {
           </div>
 
           <p className="meta text-cream/45">
-            Aucune inscription. Tout reste dans votre navigateur. Tarifs, disponibilités et personnages sont fictifs : aucune
-            réservation réelle n&apos;est créée.
+            Aucun compte. Données fictives, conservées dans votre navigateur.
           </p>
         </div>
       </Sheet>

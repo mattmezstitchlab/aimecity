@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { ART, DISTRICTS, MISSIONS, PROS } from "@/lib/data";
 import { districtById, euro, proById } from "@/lib/engine";
 import { usePrefs } from "@/lib/prefs";
@@ -24,7 +24,8 @@ export default function CityMap({
   const { story, setAmbience, addPro, removePro, updateMission } = useAime();
   const { haptic, consoleMode } = usePrefs();
   const [districtId, setDistrictId] = useState<string | null>(null);
-  const pan = usePanZoom({ min: 1, max: 3 });
+  const panRef = useRef<HTMLDivElement>(null);
+  const pan = usePanZoom(panRef, { min: 1, max: 3 });
 
   if (!story) return null;
   const crewIds = new Set(story.crew.map((entry) => entry.proId));
@@ -48,7 +49,6 @@ export default function CityMap({
     <div className="space-y-4">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div className="min-w-0">
-          <p className="kicker">Le monde · carte interactive</p>
           <h1 className="title-1 mt-1">AIME® CITY</h1>
         </div>
         <div className="flex items-center gap-2">
@@ -68,7 +68,7 @@ export default function CityMap({
         }`}
       >
         <div
-          ref={pan.ref}
+          ref={panRef}
           className={`ambience-${story.ambience} absolute inset-0 touch-none select-none ${pan.canPan ? "cursor-grab active:cursor-grabbing" : ""}`}
           {...pan.handlers}
         >
@@ -207,7 +207,7 @@ export default function CityMap({
         title={district?.name}
         footer={
           <button type="button" onClick={() => onNavigate("histoire")} className="btn btn-ghost btn-block">
-            Voir les missions du quartier <Icon name="arrowRight" size={20} />
+            Voir les missions <Icon name="arrowRight" size={20} />
           </button>
         }
       >
@@ -218,7 +218,6 @@ export default function CityMap({
               <img src={district.art} alt="" className="h-full w-full object-cover" />
               <div className="absolute inset-0" style={{ background: `linear-gradient(180deg, transparent 20%, rgba(0,0,0,0.95))` }} />
               <div className="absolute inset-x-4 bottom-3">
-                <p className="kicker text-white/70">{district.tagline}</p>
                 <p className="title-2">{district.name}</p>
               </div>
             </div>
@@ -297,7 +296,7 @@ export default function CityMap({
                     </button>
                   );
                 })}
-                {!districtMissions.length && <p className="meta">Aucune mission dans ce quartier pour l&apos;instant.</p>}
+                {!districtMissions.length && <p className="meta">Aucune mission ici.</p>}
               </div>
             </div>
           </div>

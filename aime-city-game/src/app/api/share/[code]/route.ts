@@ -10,7 +10,14 @@ export async function GET(_request: Request, { params }: { params: Promise<{ cod
     const rows = await db.select().from(weddingSites).where(eq(weddingSites.code, code.toUpperCase())).limit(1);
     if (!rows.length) return Response.json({ error: "Mini-site introuvable." }, { status: 404 });
     const rsvps = await db
-      .select({ guestName: guestRsvps.guestName, attending: guestRsvps.attending, guestsCount: guestRsvps.guestsCount, createdAt: guestRsvps.createdAt })
+      .select({
+        guestName: guestRsvps.guestName,
+        attending: guestRsvps.attending,
+        guestsCount: guestRsvps.guestsCount,
+        song: guestRsvps.song,
+        message: guestRsvps.message,
+        createdAt: guestRsvps.createdAt,
+      })
       .from(guestRsvps)
       .where(eq(guestRsvps.siteCode, code.toUpperCase()))
       .orderBy(desc(guestRsvps.createdAt))

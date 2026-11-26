@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-page-custom-font -- police chargée une seule fois dans le layout App Router */
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import "./globals.css";

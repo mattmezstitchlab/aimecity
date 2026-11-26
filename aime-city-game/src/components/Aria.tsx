@@ -114,7 +114,6 @@ export default function Aria({
           <Icon name="aria" size={28} />
         </span>
         <div className="min-w-0 flex-1">
-          <p className="kicker">ARIA · assistante &amp; entremetteuse</p>
           <h1 className="title-2">Je veille sur votre monde</h1>
         </div>
         <button type="button" onClick={() => setTools(true)} className="icon-btn icon-btn-lg" aria-label="Outils ARIA : messages et rappels">
@@ -300,7 +299,7 @@ export default function Aria({
                     <Icon name="clock" size={20} /> Rappel
                   </button>
                 </div>
-                <p className="meta text-cream/45">Aucun message n&apos;est envoyé automatiquement.</p>
+                <p className="meta text-cream/45">Aucun envoi automatique.</p>
               </>
             )}
           </div>

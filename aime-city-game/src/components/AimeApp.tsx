@@ -16,7 +16,6 @@ export default function AimeApp() {
             <Icon name="heart" size={36} />
           </span>
           <p className="title-1 mt-5 tracking-[0.06em]">AIME® CITY</p>
-          <p className="kicker mt-1">Love is an open world</p>
           <p className="meta mt-5">Chargement du monde…</p>
         </div>
       </div>

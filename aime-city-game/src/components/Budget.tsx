@@ -28,14 +28,10 @@ export default function Budget({
 
   return (
     <div className="space-y-4">
-      <SectionTitle
-        kicker="Budget vivant · simulation"
-        title="Chaque choix recalcule le monde"
-        subtitle="Estimations et engagements réels sont strictement distingués. Aucun paiement, aucune réservation : tout reste dans votre navigateur."
-      />
+      <SectionTitle title="Chaque choix recalcule le monde" />
 
       <div className="glass p-7">
-        <p className="kicker">Disponible sur engagements confirmés</p>
+        <p className="kicker">Disponible</p>
         <p className="title-hero mt-1 tabular" style={{ fontSize: "clamp(2.25rem,10vw,3.5rem)" }}>
           {euro(budget.available)}
         </p>
@@ -46,7 +42,7 @@ export default function Budget({
           {euro(budget.estimated)} estimés sur {euro(budget.initial)} · {budget.estimatePercent}%
         </p>
         <label className="mt-4 block">
-          <span className="label">Enveloppe de simulation</span>
+          <span className="label">Enveloppe</span>
           <input
             type="number"
             inputMode="numeric"
@@ -75,13 +71,11 @@ export default function Budget({
 
       {budget.overBudget && (
         <div className="rounded-3xl border border-white/50 bg-[rgba(255,255,255,0.12)] p-4 text-[1rem] leading-relaxed text-cream/85">
-          <strong className="text-white">Alerte ARIA.</strong> Vos estimations dépassent l&apos;enveloppe de {euro(Math.abs(budget.plannedAvailable))}.
-          Le scénario équilibré propose des alternatives à métier égal, sans rien modifier automatiquement.
+          <strong className="text-white">ARIA.</strong> Dépassement de {euro(Math.abs(budget.plannedAvailable))}. Scénario équilibré disponible.
         </div>
       )}
 
       <section className="space-y-3">
-        <p className="kicker">Comparateur de scénarios</p>
         {scenarios.map((item) => (
           <button
             key={item.id}
@@ -139,7 +133,6 @@ export default function Budget({
 
       <section className="card overflow-hidden">
         <div className="flex items-center justify-between gap-2 border-b border-[rgba(255,255,255,0.1)] p-4">
-          <p className="kicker">Détail par personnage</p>
           <button type="button" onClick={() => onNavigate("crew")} className="text-[0.9375rem] font-semibold text-white">
             Gérer l&apos;équipe
           </button>
@@ -184,7 +177,7 @@ export default function Budget({
           })}
           {!story.crew.length && (
             <div className="p-6 text-center">
-              <p className="text-[1rem] text-cream/65">Aucun poste budgété. Sélectionnez des personnages pour voir le budget vivre.</p>
+              <p className="text-[1rem] text-cream/65">Aucun poste. Choisissez des personnages.</p>
               <button type="button" onClick={() => onNavigate("casting")} className="btn btn-lg btn-primary mt-3">Ouvrir le casting</button>
             </div>
           )}
@@ -193,7 +186,6 @@ export default function Budget({
 
       <div className="grid gap-3 lg:grid-cols-2">
         <div className="glass p-6">
-          <p className="kicker">Répartition par quartier</p>
           <div className="mt-3 space-y-3">
             {budget.categoryTotals.map((item) => {
               const district = districtById(item.districtId);
@@ -209,12 +201,12 @@ export default function Budget({
                 </div>
               );
             })}
-            {!budget.categoryTotals.length && <p className="meta">Rien à répartir pour l&apos;instant.</p>}
+            {!budget.categoryTotals.length && <p className="meta">Rien à répartir.</p>}
           </div>
         </div>
 
         <div className="glass p-6">
-          <p className="kicker">ARIA · métiers à budgéter</p>
+          <p className="kicker">À budgéter</p>
           <div className="mt-3 space-y-2">
             {gaps.map((gap) => {
               const candidate = [...gap.candidates].sort((a, b) => a.fee - b.fee)[0] ?? PROS.find((pro) => pro.job === gap.job);

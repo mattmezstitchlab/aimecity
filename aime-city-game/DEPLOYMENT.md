@@ -18,7 +18,7 @@ Le lien de prévisualisation du sandbox sert aux essais. Ce n'est pas un héberg
 | RSVP envoyé depuis une page `/s/[code]` | PostgreSQL, table `guest_rsvps` |
 | RSVP saisi dans l'aperçu invité de l'application | Partie locale uniquement |
 
-Une partie n'est **pas automatiquement synchronisée** entre iPhone, ordinateur, navigateurs ou domaines. Le panneau « Réponses locales » n'affiche pas encore les RSVP distants enregistrés dans PostgreSQL. Une remise à zéro locale ne supprime pas les mini-sites ou RSVP déjà publiés.
+Une partie n'est **pas automatiquement synchronisée** entre iPhone, ordinateur, navigateurs ou domaines. Le panneau « Réponses locales » montre les RSVP saisis dans l'app ; les réponses envoyées depuis un mini-site publié sont affichées à côté, via `GET /api/share/[code]`. Une remise à zéro locale ne supprime pas les mini-sites ou RSVP déjà publiés.
 
 ## 1. Préserver votre partie et récupérer le code
 
@@ -118,7 +118,7 @@ La préparation d'hébergement n'est pas un audit de sécurité complet. **Ne pa
 
 1. **Droits propriétaire sur les mini-sites.** Actuellement, hors verrou privé, connaître un code de partage suffit à demander sa modification via l'API. Le code public ne doit jamais servir de clé d'édition.
 2. **Confidentialité des RSVP.** L'API de lecture du partage expose une liste de réponses hors verrou privé ; séparer la page publique des réponses réservées au couple.
-3. **Consultation des RSVP distants.** Relier l'espace des mariés aux réponses du serveur avec autorisation ; le panneau actuel ne montre que les réponses locales.
+3. **Consultation des RSVP distants.** L'espace des mariés affiche désormais les réponses du serveur, mais par le biais de l'API de partage : prévoir un accès dédié au couple avant une ouverture publique (voir point 2).
 4. **Validation serveur et antispam.** Valider complètement les données, plafonner tailles/photos, filtrer les URL autorisées et limiter les soumissions de RSVP.
 5. **Stockage durable des photos.** Prévoir un stockage d'objets avec règles d'accès et quotas plutôt que de faire grossir indéfiniment le navigateur et les lignes JSON.
 6. **Synchronisation des parties si nécessaire.** Ajouter une sauvegarde serveur et un accès sécurisé pour partager l'organisation entre appareils ou avec un conjoint.

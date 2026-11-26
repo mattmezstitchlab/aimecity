@@ -194,7 +194,7 @@ export function CharacterViewer({
 
         {entry && (
           <div className="glass-soft space-y-4 p-5">
-            <p className="kicker">Fiche équipe · modifiable</p>
+            <p className="kicker">Équipe</p>
             <label className="block">
               <span className="label">Statut</span>
               <select className="field" value={entry.status} onChange={(event) => updateCrew(pro.id, { status: event.target.value as ProStatus })}>
@@ -260,7 +260,7 @@ export function CharacterViewer({
         </div>
 
         <p className="text-[0.875rem] leading-relaxed text-cream/45">
-          Tarif estimatif indicatif. Aucune réservation, disponibilité ou paiement réel n&apos;est créé dans AIME® CITY.
+          Tarifs fictifs · aucune réservation.
         </p>
       </div>
 
@@ -342,7 +342,7 @@ export function CharacterViewer({
       <Sheet open={panel === "claim"} onClose={() => setPanel("none")} kicker="Professionnel" title="M'approprier cette carte">
         <div className="space-y-3 p-5">
           <p className="text-[0.9375rem] leading-relaxed text-cream/60">
-            Personnalisez votre portrait, votre identité, vos prestations et vos coordonnées. La carte reste une démonstration locale.
+            Personnalisez votre carte. Tout reste local.
           </p>
           <label className="block">
             <span className="label">Nom affiché</span>
@@ -439,7 +439,6 @@ export default function Casting() {
   return (
     <div className="space-y-4">
       <section className="section first:border-t-0 first:pt-0">
-        <p className="kicker">Casting · {PROS.length} personnages illustrés</p>
         <h1 className="title-1 mt-4">Choisissez votre équipe</h1>
       </section>
 
@@ -543,7 +542,7 @@ export default function Casting() {
 
       {!filtered.length && (
         <p className="glass-soft p-6 text-center text-[1rem] text-cream/65">
-          Aucun personnage pour cette recherche. Essayez « photographe », « musique » ou changez de quartier.
+          Aucun personnage trouvé.
         </p>
       )}
 

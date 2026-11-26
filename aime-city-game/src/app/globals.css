@@ -1,0 +1,580 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-noir: #000000;
+  --color-noir-2: #0a0a0a;
+  --color-cream: #ffffff;
+  --font-display: "Inter Tight", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+
+:root {
+  --noir: #000000;
+  --noir-2: #0a0a0a;
+  --cream: #ffffff;
+  --line: rgba(255, 255, 255, 0.13);
+  --line-strong: rgba(255, 255, 255, 0.28);
+  --muted: rgba(255, 255, 255, 0.68);
+  --dim: rgba(255, 255, 255, 0.46);
+  --faint: rgba(255, 255, 255, 0.32);
+  --nav-h: 80px;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --safe-t: env(safe-area-inset-top, 0px);
+  --r: 20px;
+  --r-lg: 28px;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  font-size: 16px;
+  background: #000;
+}
+
+html,
+body {
+  color: var(--cream);
+  font-family: var(--font-sans);
+  overscroll-behavior-y: none;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  font-size: 16px;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  background: #000;
+}
+
+::selection {
+  background: #ffffff;
+  color: #000000;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 99px;
+}
+* {
+  scrollbar-color: rgba(255, 255, 255, 0.22) transparent;
+  scrollbar-width: thin;
+}
+
+/* ------------------------------------------------------------------ */
+/* Typographie éditoriale : noir, blanc, beaucoup d'air                */
+/* ------------------------------------------------------------------ */
+
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 0.94;
+}
+
+.title-hero {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2.75rem, 11vw, 7.5rem);
+  line-height: 0.9;
+  letter-spacing: -0.045em;
+}
+
+.title-1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.75rem, 6vw, 3rem);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+}
+
+.title-2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.375rem, 4.6vw, 1.875rem);
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+}
+
+.title-3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.1875rem;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+}
+
+.kicker {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.meta {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.body-lg {
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+.hairline {
+  border-top: 1px solid var(--line);
+}
+
+/* ------------------------------------------------------------------ */
+/* Surfaces : noir mat, filets fins, pas de dégradés lourds            */
+/* ------------------------------------------------------------------ */
+
+.glass,
+.glass-soft,
+.card {
+  background: var(--noir-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+}
+
+.glass-soft {
+  border-radius: var(--r);
+}
+
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.22;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.12) 0.5px, transparent 0.8px);
+  background-size: 3px 3px;
+  mix-blend-mode: overlay;
+}
+
+/* ------------------------------------------------------------------ */
+/* Contrôles : cibles 48px+, pastilles, filets fins                    */
+/* ------------------------------------------------------------------ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  min-height: 52px;
+  padding: 0 1.35rem;
+  border-radius: 999px;
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  border: 1px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  text-align: center;
+  transition:
+    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.2s ease,
+    border-color 0.2s ease,
+    opacity 0.2s ease,
+    color 0.2s ease;
+}
+.btn:active {
+  transform: scale(0.975);
+}
+.btn-lg {
+  min-height: 58px;
+  font-size: 1rem;
+  padding: 0 1.7rem;
+}
+.btn-light {
+  background: #ffffff;
+  color: #000000;
+}
+.btn-light:hover {
+  background: rgba(255, 255, 255, 0.86);
+}
+.btn-primary {
+  background: #ffffff;
+  color: #000000;
+  font-weight: 600;
+}
+.btn-primary:hover {
+  background: #e6e6e6;
+}
+.btn-ghost {
+  border-color: var(--line-strong);
+  color: var(--cream);
+  background: transparent;
+}
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+.btn-danger {
+  border-color: rgba(255, 255, 255, 0.34);
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
+}
+.btn-block {
+  width: 100%;
+}
+.btn[disabled] {
+  opacity: 0.35;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.icon-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  flex: none;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--cream);
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+.icon-btn:active {
+  transform: scale(0.94);
+}
+.icon-btn:hover {
+  background: rgba(255, 255, 255, 0.11);
+}
+.icon-btn-lg {
+  width: 56px;
+  height: 56px;
+}
+.icon-btn-active {
+  border-color: rgba(255, 255, 255, 0.72);
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 36px;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: transparent;
+  font-size: 0.8125rem;
+  font-weight: 450;
+  color: rgba(255, 255, 255, 0.72);
+  white-space: nowrap;
+}
+button.chip {
+  cursor: pointer;
+  min-height: 44px;
+  padding: 0.35rem 0.95rem;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+button.chip:hover {
+  border-color: var(--line-strong);
+  color: #fff;
+}
+.chip-active {
+  border-color: rgba(255, 255, 255, 0.72);
+  color: #fff;
+  background: rgba(255, 255, 255, 0.13);
+}
+
+.field {
+  width: 100%;
+  min-height: 52px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.75rem 0.95rem;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  color: var(--cream);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+textarea.field {
+  min-height: 108px;
+  resize: vertical;
+}
+.field:focus {
+  border-color: rgba(255, 255, 255, 0.72);
+}
+.field::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+select.field {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.9rem center;
+  padding-right: 2.4rem;
+}
+select.field option {
+  background: #0a0a0a;
+  color: #fff;
+}
+
+.label {
+  display: block;
+  margin-bottom: 0.45rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.switch {
+  position: relative;
+  width: 54px;
+  height: 32px;
+  flex: none;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.06);
+  transition: background 0.25s ease;
+}
+.switch::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  background: #fff;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.switch[data-on="true"] {
+  background: #ffffff;
+  border-color: transparent;
+}
+.switch[data-on="true"]::after {
+  transform: translateX(22px);
+  background: #000;
+}
+
+/* ------------------------------------------------------------------ */
+/* Rythme : sections très espacées, séparateurs fins                   */
+/* ------------------------------------------------------------------ */
+
+.section {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  border-top: 1px solid var(--line);
+}
+@media (min-width: 768px) {
+  .section {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+}
+
+.safe-t {
+  padding-top: max(var(--safe-t), 0.5rem);
+}
+.safe-b {
+  padding-bottom: max(var(--safe-b), 0.75rem);
+}
+.app-main {
+  padding-bottom: calc(var(--nav-h) + var(--safe-b) + 1.5rem);
+}
+@media (min-width: 768px) {
+  .app-main {
+    padding-bottom: 4rem;
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.snap-x-row {
+  scroll-snap-type: x mandatory;
+}
+.snap-x-row > * {
+  scroll-snap-align: start;
+}
+
+/* ------------------------------------------------------------------ */
+/* Ambiances                                                           */
+/* ------------------------------------------------------------------ */
+
+.ambience-day img {
+  filter: saturate(1.03) brightness(1.07);
+}
+.ambience-sunset img {
+  filter: saturate(1.12) brightness(0.96);
+}
+.ambience-night img {
+  filter: saturate(1.2) brightness(0.62) hue-rotate(-12deg);
+}
+
+/* ------------------------------------------------------------------ */
+/* Animations légères                                                  */
+/* ------------------------------------------------------------------ */
+
+.panel-enter {
+  animation: panelIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.rise {
+  animation: rise 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.sheet-in {
+  animation: sheetIn 0.34s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.side-in {
+  animation: sideIn 0.34s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.fade-in {
+  animation: fadeIn 0.35s ease both;
+}
+
+@keyframes panelIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes sheetIn {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes sideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes kenburns {
+  from {
+    transform: scale(1.02);
+  }
+  to {
+    transform: scale(1.14) translate3d(-1%, -1.5%, 0);
+  }
+}
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-kenburns {
+  animation: kenburns 26s ease-out alternate infinite;
+}
+.marquee-track {
+  animation: marquee 34s linear infinite;
+}
+
+html[data-motion="reduced"] *,
+html[data-motion="reduced"] *::before,
+html[data-motion="reduced"] *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 1px solid #fff;
+  outline-offset: 3px;
+}
+
+input[type="range"] {
+  accent-color: #ffffff;
+  height: 44px;
+}
+
+/* Scroll inside overlays, including iOS Safari and short landscape screens. */
+.sheet-scroll,
+.character-scroll {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.48) transparent;
+}
+.sheet-scroll::-webkit-scrollbar,
+.character-scroll::-webkit-scrollbar {
+  width: 7px;
+}
+.sheet-scroll::-webkit-scrollbar-thumb,
+.character-scroll::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.42);
+}

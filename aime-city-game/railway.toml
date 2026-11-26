@@ -1,0 +1,15 @@
+# AIME CITY — one web service plus a separate PostgreSQL service.
+# Configure DATABASE_URL as a reference to the PostgreSQL service.
+# Set AIME_PRIVATE_PASSWORD before the first deployment (see DEPLOYMENT.md).
+
+[build]
+builder = "RAILPACK"
+buildCommand = "npm run build"
+
+[deploy]
+preDeployCommand = "npx tsx scripts/migrate.ts"
+startCommand = "npm run start -- --hostname 0.0.0.0"
+healthcheckPath = "/api/health"
+healthcheckTimeout = 120
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 5

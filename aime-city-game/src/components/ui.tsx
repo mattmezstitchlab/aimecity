@@ -8,6 +8,7 @@ import {
   type PointerEvent as ReactPointerEvent,
   type CSSProperties,
   type ReactNode,
+  type RefObject,
   type WheelEvent as ReactWheelEvent,
 } from "react";
 import { usePrefs } from "@/lib/prefs";
@@ -465,12 +466,10 @@ export function Progress({ value, height = 8 }: { value: number; tone?: string; 
 }
 
 export function SectionTitle({
-  kicker,
   title,
   subtitle,
   right,
 }: {
-  kicker: string;
   title: string;
   subtitle?: string;
   right?: ReactNode;
@@ -479,8 +478,7 @@ export function SectionTitle({
     <section className="section first:border-t-0 first:pt-0">
       <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
         <div className="min-w-0">
-          <p className="kicker">{kicker}</p>
-          <h1 className="title-1 mt-4">{title}</h1>
+          <h1 className="title-1">{title}</h1>
           {subtitle && <p className="body-lg mt-5 max-w-2xl">{subtitle}</p>}
         </div>
         {right && <div className="flex flex-wrap items-center gap-2">{right}</div>}
@@ -553,8 +551,10 @@ export function Empty({ icon = "spark", title, text, action }: { icon?: IconName
 /* Zoom + déplacement tactile (pincement, glisser, molette)            */
 /* ------------------------------------------------------------------ */
 
-export function usePanZoom({ min = 1, max = 3.2 }: { min?: number; max?: number } = {}) {
-  const ref = useRef<HTMLDivElement>(null);
+export function usePanZoom(
+  ref: RefObject<HTMLDivElement | null>,
+  { min = 1, max = 3.2 }: { min?: number; max?: number } = {},
+) {
   const [zoom, setZoom] = useState(1);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [gesture, setGesture] = useState<"idle" | "pan" | "pinch">("idle");
@@ -573,7 +573,7 @@ export function usePanZoom({ min = 1, max = 3.2 }: { min?: number; max?: number 
         y: Math.max(-maxY, Math.min(maxY, next.y)),
       };
     },
-    [],
+    [ref],
   );
 
   const applyZoom = useCallback(
@@ -638,7 +638,6 @@ export function usePanZoom({ min = 1, max = 3.2 }: { min?: number; max?: number 
   }, []);
 
   return {
-    ref,
     zoom,
     offset,
     gesture,

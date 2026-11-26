@@ -25,13 +25,13 @@ const PRIMARY: { id: ViewId; label: string; icon: IconName }[] = [
 ];
 
 const SECONDARY: { id: ViewId; label: string; icon: IconName; hint: string }[] = [
-  { id: "agenda", label: "Calendrier", icon: "calendar", hint: "24 missions illustrées" },
-  { id: "budget", label: "Budget vivant", icon: "wallet", hint: "Estimations & engagements" },
-  { id: "jour-j", label: "Jour J", icon: "journey", hint: "Timeline & cadran" },
-  { id: "radio", label: "AIME® Radio", icon: "radio", hint: "7 univers musicaux" },
-  { id: "studio", label: "Studio", icon: "studio", hint: "Cinéma & mini-site" },
-  { id: "invites", label: "Aperçu invité", icon: "user", hint: "Sans données financières" },
-  { id: "reglages", label: "Réglages", icon: "settings", hint: "Sauvegarde & confort" },
+  { id: "agenda", label: "Calendrier", icon: "calendar", hint: "24 missions" },
+  { id: "budget", label: "Budget vivant", icon: "wallet", hint: "Estimations" },
+  { id: "jour-j", label: "Jour J", icon: "journey", hint: "Timeline" },
+  { id: "radio", label: "AIME® Radio", icon: "radio", hint: "7 univers" },
+  { id: "studio", label: "Studio", icon: "studio", hint: "Mini-site" },
+  { id: "invites", label: "Aperçu invité", icon: "user", hint: "Sans budget" },
+  { id: "reglages", label: "Réglages", icon: "settings", hint: "Sauvegarde" },
 ];
 
 const TITLES: Record<string, string> = {
@@ -204,7 +204,6 @@ export default function AppShell() {
           {view === "aria" && <Aria onOpenPro={openPro} onNavigate={navigate} />}
           {view === "invites" && (
             <div className="space-y-4">
-              <p className="kicker">Aperçu invité · sans données financières</p>
               <GuestPreviewCard onNavigate={navigate} />
             </div>
           )}
@@ -239,7 +238,7 @@ export default function AppShell() {
       )}
 
       {/* ---------------- Menu complet ---------------- */}
-      <Sheet open={menuOpen} onClose={() => setMenuOpen(false)} kicker="AIME® CITY" title="Toutes les destinations">
+      <Sheet open={menuOpen} onClose={() => setMenuOpen(false)} kicker="AIME® CITY" title="Explorer">
         <div className="space-y-5 p-5">
           <div className="grid grid-cols-2 gap-2.5">
             {[...PRIMARY, ...SECONDARY].map((item) => {
@@ -258,7 +257,9 @@ export default function AppShell() {
                   </span>
                   <span className="min-w-0">
                     <span className="block truncate text-[1rem] font-semibold">{item.label}</span>
-                    <span className="meta block truncate text-cream/45">{(item as { hint?: string }).hint ?? "Navigation principale"}</span>
+                    {(item as { hint?: string }).hint && (
+                      <span className="meta block truncate text-cream/45">{(item as { hint?: string }).hint}</span>
+                    )}
                   </span>
                 </button>
               );
@@ -266,7 +267,6 @@ export default function AppShell() {
           </div>
 
           <div className="glass-soft space-y-3 p-4">
-            <p className="kicker">Confort de jeu</p>
             <div className="flex flex-wrap gap-2">
               {(["auto", "portrait", "landscape"] as const).map((mode) => (
                 <button
@@ -281,7 +281,7 @@ export default function AppShell() {
               ))}
             </div>
             <p className="meta text-cream/50">
-              {consoleMode ? "Mode console actif : panneaux latéraux et immersion paysage." : "Mode portrait : navigation verticale au pouce."}
+              {consoleMode ? "Panneaux latéraux." : "Navigation au pouce."}
             </p>
           </div>
         </div>

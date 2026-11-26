@@ -127,13 +127,11 @@ export function StoryView({
   return (
     <div className="space-y-4">
       <section className="section first:border-t-0 first:pt-0">
-        <p className="kicker">Mode histoire · progression libre</p>
         <h1 className="title-1 mt-4">Huit chapitres, 24 missions</h1>
       </section>
 
       <div className="glass p-6">
         <div className="flex items-center justify-between gap-3">
-          <p className="kicker">Progression du monde</p>
           <span className="title-3 tabular">{progressPercent(story)}%</span>
         </div>
         <div className="mt-2">
@@ -185,7 +183,6 @@ export function StoryView({
           <img src={districtById(missions[0]?.districtId ?? "love")?.art} alt="" className="h-full w-full object-cover" />
           <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(0,0,0,0.92),rgba(0,0,0,0.36))]" />
           <div className="absolute inset-0 flex flex-col justify-end p-4">
-            <p className="kicker text-white/80">Chapitre {chapter.index} · {chapter.subtitle}</p>
             <h2 className="title-2">{chapter.title}</h2>
           </div>
         </div>
@@ -225,18 +222,15 @@ export function StoryView({
 
       <div className="grid gap-3 sm:grid-cols-3">
         <button type="button" onClick={() => onNavigate("monde")} className="glass-soft p-4 text-left">
-          <p className="kicker">Le monde change</p>
-          <p className="mt-1 text-[1rem] text-cream/75">Chaque mission illumine un quartier.</p>
+          <p className="mt-1 text-[1rem] text-cream/75">Une mission, un quartier.</p>
           <span className="mt-1 flex items-center gap-1 text-[0.9375rem] font-semibold text-white">Explorer <Icon name="arrowRight" size={18} /></span>
         </button>
         <button type="button" onClick={() => onNavigate("casting")} className="glass-soft p-4 text-left">
-          <p className="kicker">Les personnages</p>
-          <p className="mt-1 text-[1rem] text-cream/75">Chaque mission révèle un métier.</p>
+          <p className="mt-1 text-[1rem] text-cream/75">Une mission, un métier.</p>
           <span className="mt-1 flex items-center gap-1 text-[0.9375rem] font-semibold text-white">Casting <Icon name="arrowRight" size={18} /></span>
         </button>
         <button type="button" onClick={() => onNavigate("agenda")} className="glass-soft p-4 text-left">
-          <p className="kicker">Agenda</p>
-          <p className="mt-1 text-[1rem] text-cream/75">La mosaïque des 24 missions.</p>
+          <p className="mt-1 text-[1rem] text-cream/75">24 missions.</p>
           <span className="mt-1 flex items-center gap-1 text-[0.9375rem] font-semibold text-white">Calendrier <Icon name="arrowRight" size={18} /></span>
         </button>
       </div>
@@ -263,7 +257,6 @@ export function CalendarView({
   return (
     <div className="space-y-4">
       <section className="section first:border-t-0 first:pt-0">
-        <p className="kicker">Calendrier · 24 missions illustrées</p>
         <h1 className="title-1 mt-4">Votre agenda</h1>
       </section>
 
@@ -332,9 +325,8 @@ export function CalendarView({
 
       <div className="grid gap-3 sm:grid-cols-2">
         <div className="glass p-6">
-          <p className="kicker">Prochaine étape</p>
           <h2 className="title-2 mt-1">{next?.title ?? "Les 24 missions sont accomplies"}</h2>
-          <p className="mt-1.5 text-[0.9375rem] text-cream/65">{next?.brief ?? "Votre monde est complet : publiez le mini-site et écrivez les remerciements."}</p>
+          <p className="mt-1.5 text-[0.9375rem] text-cream/65">{next?.brief ?? "Monde complet : publiez le mini-site."}</p>
           {next && (
             <button
               type="button"
@@ -349,7 +341,6 @@ export function CalendarView({
           )}
         </div>
         <div className="glass p-6">
-          <p className="kicker">Agenda prestataires</p>
           <div className="mt-2 space-y-2">
             {story.crew.slice(0, 6).map((entry) => {
               const pro = proById(entry.proId);

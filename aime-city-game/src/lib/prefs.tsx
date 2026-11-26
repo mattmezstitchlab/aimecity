@@ -59,12 +59,15 @@ export function PrefsProvider({ children }: { children: ReactNode }) {
   });
 
   useEffect(() => {
-    try {
-      const raw = window.localStorage.getItem(KEY);
-      if (raw) setPrefs({ ...DEFAULTS, ...(JSON.parse(raw) as Partial<Prefs>) });
-    } catch {
-      /* préférences par défaut */
-    }
+    const timer = setTimeout(() => {
+      try {
+        const raw = window.localStorage.getItem(KEY);
+        if (raw) setPrefs({ ...DEFAULTS, ...(JSON.parse(raw) as Partial<Prefs>) });
+      } catch {
+        /* préférences par défaut */
+      }
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {

@@ -42,26 +42,40 @@ const STORE_NAME = "world";
 async function idbGet<T>(): Promise<T | null> {
   if (typeof window === "undefined" || !("indexedDB" in window)) return null;
   return new Promise((resolve) => {
+    let settled = false;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const finish = (value: T | null) => {
+      if (settled) return;
+      settled = true;
+      if (timer) clearTimeout(timer);
+      resolve(value);
+    };
+    // IndexedDB peut rester bloqué (aperçu intégré, navigation privée,
+    // stockage désactivé) : le jeu doit toujours pouvoir s'ouvrir.
+    timer = setTimeout(() => finish(null), 1200);
     try {
       const request = window.indexedDB.open(DB_NAME, 1);
       request.onupgradeneeded = () => {
         const database = request.result;
         if (!database.objectStoreNames.contains(STORE_NAME)) database.createObjectStore(STORE_NAME);
       };
-      request.onerror = () => resolve(null);
+      request.onblocked = () => finish(null);
+      request.onerror = () => finish(null);
       request.onsuccess = () => {
         const database = request.result;
         try {
           const tx = database.transaction(STORE_NAME, "readonly");
           const get = tx.objectStore(STORE_NAME).get(SAVE_KEY);
-          get.onsuccess = () => resolve((get.result as T) ?? null);
-          get.onerror = () => resolve(null);
+          get.onsuccess = () => finish((get.result as T) ?? null);
+          get.onerror = () => finish(null);
+          tx.onabort = () => finish(null);
+          tx.onerror = () => finish(null);
         } catch {
-          resolve(null);
+          finish(null);
         }
       };
     } catch {
-      resolve(null);
+      finish(null);
     }
   });
 }
@@ -172,17 +186,26 @@ export function AimeProvider({ children }: { children: ReactNode }) {
     let alive = true;
     (async () => {
       let loaded: StoryState | null = null;
-      const local = typeof window !== "undefined" ? window.localStorage.getItem(SAVE_KEY) : null;
-      if (local) {
+      try {
+        let local: string | null = null;
         try {
-          loaded = normalizeStory(JSON.parse(local));
+          local = typeof window === "undefined" ? null : window.localStorage.getItem(SAVE_KEY);
         } catch {
-          loaded = null;
+          local = null;
         }
-      }
-      if (!loaded) {
-        const fromIdb = await idbGet<unknown>();
-        loaded = normalizeStory(fromIdb);
+        if (local) {
+          try {
+            loaded = normalizeStory(JSON.parse(local));
+          } catch {
+            loaded = null;
+          }
+        }
+        if (!loaded) {
+          const fromIdb = await idbGet<unknown>();
+          loaded = normalizeStory(fromIdb);
+        }
+      } catch {
+        loaded = null;
       }
       if (!alive) return;
       setStory(loaded);
@@ -231,7 +254,7 @@ export function AimeProvider({ children }: { children: ReactNode }) {
 
   const startDemo = useCallback(() => {
     persist(createDemoState());
-    toast("Partie de démonstration chargée · Camille & Gabriel");
+    toast("Démo chargée");
   }, [persist, toast]);
 
   const startNewStory = useCallback(
@@ -270,14 +293,14 @@ export function AimeProvider({ children }: { children: ReactNode }) {
         updatedAt: new Date().toISOString(),
       };
       persist(fresh);
-      toast("Votre monde est ouvert · sauvegarde locale automatique");
+      toast("Monde ouvert");
     },
     [persist, toast],
   );
 
   const exploreFreely = useCallback(() => {
     persist(createExplorerState());
-    toast("Exploration libre · aucune inscription requise");
+    toast("Exploration libre");
   }, [persist, toast]);
 
   const resumeStory = useCallback(() => {
@@ -296,7 +319,7 @@ export function AimeProvider({ children }: { children: ReactNode }) {
 
   const resetWorld = useCallback(() => {
     persist(null);
-    toast("Monde réinitialisé · la sauvegarde locale a été effacée");
+    toast("Monde réinitialisé");
   }, [persist, toast]);
 
   const value = useMemo<AimeContextValue>(() => {

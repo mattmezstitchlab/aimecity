@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import Link from "next/link";
 
 export default function AppError({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   useEffect(() => {
@@ -19,9 +20,9 @@ export default function AppError({ error, reset }: { error: Error & { digest?: s
           <button type="button" onClick={reset} className="btn btn-primary">
             Relancer le monde
           </button>
-          <a href="/" className="btn btn-ghost">
+          <Link href="/" className="btn btn-ghost">
             Retour à l&apos;accueil
-          </a>
+          </Link>
         </div>
       </div>
     </main>

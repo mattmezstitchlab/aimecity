@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { COMPLEMENTS, MISSIONS, STATUS_LABELS, STATUS_ORDER } from "@/lib/data";
 import { complementarySuggestions, computeBudget, coverageGaps, districtById, euro, proById } from "@/lib/engine";
 import { usePrefs } from "@/lib/prefs";
@@ -20,9 +20,10 @@ export default function Crew({
   const [tab, setTab] = useState<"gallery" | "constellation">("gallery");
   const [editing, setEditing] = useState<string | null>(null);
   const [budgetOpen, setBudgetOpen] = useState(false);
-  const pan = usePanZoom({ min: 1, max: 2.6 });
+  const panRef = useRef<HTMLDivElement>(null);
+  const pan = usePanZoom(panRef, { min: 1, max: 2.6 });
 
-  const crew = story?.crew ?? [];
+  const crew = useMemo(() => story?.crew ?? [], [story?.crew]);
   const nodes = useMemo(
     () =>
       crew.slice(0, 12).map((entry, index, array) => {
@@ -56,7 +57,6 @@ export default function Crew({
   return (
     <div className="space-y-4">
       <section className="section first:border-t-0 first:pt-0">
-        <p className="kicker">AIME® CREW</p>
         <h1 className="title-1 mt-4">Votre équipe</h1>
       </section>
 
@@ -64,7 +64,6 @@ export default function Crew({
       <button type="button" onClick={() => setBudgetOpen(true)} className="glass w-full p-6 text-left">
         <div className="flex items-center justify-between gap-3">
           <div className="min-w-0">
-            <p className="kicker">Budget · toucher pour le détail</p>
             <p className="title-2 mt-1 tabular">{euro(budget.estimated)} <span className="text-cream/40">/ {euro(budget.initial)}</span></p>
           </div>
           <span className="icon-btn shrink-0">
@@ -94,7 +93,7 @@ export default function Crew({
       {tab === "constellation" ? (
         <div className="space-y-3">
           <div className="relative aspect-square w-full overflow-hidden rounded-[28px] border border-[rgba(255,255,255,0.14)] bg-[radial-gradient(60%_60%_at_50%_50%,rgba(255,255,255,0.14),rgba(0,0,0,0.9))]">
-            <div ref={pan.ref} className="absolute inset-0 touch-none" {...pan.handlers}>
+            <div ref={panRef} className="absolute inset-0 touch-none" {...pan.handlers}>
               <div className="absolute inset-0 transition-transform duration-200" style={{ transform: pan.transform }}>
                 <svg viewBox="0 0 100 100" className="absolute inset-0 h-full w-full" aria-hidden="true">
                   <defs>
@@ -143,7 +142,7 @@ export default function Crew({
             </div>
             {!nodes.length && (
               <p className="absolute inset-x-4 bottom-4 rounded-2xl border border-[rgba(255,255,255,0.16)] bg-[rgba(0,0,0,0.85)] p-4 text-center text-[0.9375rem] text-cream/70">
-                Ajoutez un premier personnage pour tisser les liens entre métiers.
+                Ajoutez un personnage pour voir les liens.
               </p>
             )}
           </div>
@@ -162,7 +161,7 @@ export default function Crew({
                   </button>
                 </div>
               ))}
-              {!suggestions.length && <p className="meta">Ajoutez un personnage : AIME® CITY proposera les métiers complémentaires.</p>}
+              {!suggestions.length && <p className="meta">Ajoutez un personnage pour voir les suggestions.</p>}
             </div>
           </div>
         </div>
@@ -175,7 +174,7 @@ export default function Crew({
               </span>
               <h2 className="title-2">Votre équipe est encore vide</h2>
               <p className="max-w-md text-[1rem] text-cream/65">
-                Ouvrez le casting et choisissez vos premiers personnages. {gaps.length} métiers clés restent à couvrir.
+                {gaps.length} métiers clés à couvrir.
               </p>
               <button type="button" onClick={() => onNavigate("casting")} className="btn btn-lg btn-primary">
                 Ouvrir le casting <Icon name="arrowRight" size={20} />

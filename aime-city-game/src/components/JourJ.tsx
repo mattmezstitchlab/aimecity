@@ -63,9 +63,7 @@ function Dial({ events, selectedId, onSelect, size = 300 }: { events: DayEvent[]
       </svg>
       <div className="pointer-events-none absolute inset-0 grid place-items-center text-center">
         <div>
-          <p className="kicker">Jour J</p>
           <p className="title-1 text-white">{events.length}</p>
-          <p className="kicker">séquences</p>
         </div>
       </div>
     </div>
@@ -148,7 +146,7 @@ export default function JourJ({ onNavigate }: { onNavigate: (view: ViewId) => vo
           <p className="kicker text-white">Conflits détectés · {conflicts.length}</p>
           {conflicts.map((conflict) => (
             <div key={`${conflict.a.id}-${conflict.b.id}`} className="mt-2 flex flex-wrap items-center justify-between gap-2">
-              <span className="text-[0.9375rem] text-cream/85">« {conflict.a.title} » et « {conflict.b.title} » se croisent sur {conflict.minutes} min</span>
+              <span className="text-[0.9375rem] text-cream/85">{conflict.a.title} / {conflict.b.title} · {conflict.minutes} min</span>
               <button
                 type="button"
                 onClick={() => {
@@ -164,7 +162,7 @@ export default function JourJ({ onNavigate }: { onNavigate: (view: ViewId) => vo
         </div>
       ) : (
         <div className="rounded-3xl border border-[#ffffff]/35 bg-[rgba(255,255,255,0.08)] p-4 text-[1rem] text-cream/80">
-          Aucun chevauchement : les durées sont compatibles avec les horaires.
+          Aucun chevauchement.
         </div>
       )}
 
@@ -201,7 +199,6 @@ export default function JourJ({ onNavigate }: { onNavigate: (view: ViewId) => vo
     <div className="space-y-4">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div className="min-w-0">
-          <p className="kicker">Le jour J</p>
           <h1 className="title-1 mt-1">Minute par minute</h1>
         </div>
         <button type="button" onClick={openFullscreen} className="btn btn-primary">
@@ -282,7 +279,6 @@ export default function JourJ({ onNavigate }: { onNavigate: (view: ViewId) => vo
           <div className="mx-auto max-w-4xl space-y-4">
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">
-                <p className="kicker">Régie du jour</p>
                 <h2 className="title-1">{story.wedding.partnerA} &amp; {story.wedding.partnerB}</h2>
                 <p className="meta mt-1">{formatDate(story.wedding.date)} · {story.wedding.place}</p>
               </div>

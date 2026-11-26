@@ -15,9 +15,8 @@ export function RadioView() {
   return (
     <div className="space-y-4">
       <SectionTitle
-        kicker="AIME® RADIO · sept univers"
         title="La bande-son du monde"
-        subtitle="Aucun son ne se lance automatiquement et aucun contenu audio n'est hébergé. Associez vos liens Spotify ou Apple Music aux moments du mariage."
+        subtitle="Ajoutez vos liens Spotify ou Apple Music."
       />
 
       <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
@@ -109,7 +108,7 @@ export function RadioView() {
   );
 }
 
-function Toggle({ label, hint, value, onChange, icon }: { label: string; hint: string; value: boolean; onChange: (next: boolean) => void; icon: Parameters<typeof Icon>[0]["name"] }) {
+function Toggle({ label, hint, value, onChange, icon }: { label: string; hint?: string; value: boolean; onChange: (next: boolean) => void; icon: Parameters<typeof Icon>[0]["name"] }) {
   return (
     <button type="button" onClick={() => onChange(!value)} className="flex w-full items-center gap-3 rounded-2xl border border-[rgba(255,255,255,0.12)] p-4 text-left" aria-pressed={value}>
       <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-[rgba(255,255,255,0.16)] text-white">
@@ -117,7 +116,7 @@ function Toggle({ label, hint, value, onChange, icon }: { label: string; hint: s
       </span>
       <span className="min-w-0 flex-1">
         <span className="block text-[1.0625rem] font-semibold">{label}</span>
-        <span className="meta block">{hint}</span>
+        {hint && <span className="meta block">{hint}</span>}
       </span>
       <span className="switch" data-on={value} />
     </button>
@@ -150,9 +149,8 @@ export function SettingsView() {
   return (
     <div className="space-y-4">
       <SectionTitle
-        kicker="Réglages & sauvegarde"
         title="Votre monde reste le vôtre"
-        subtitle="Sauvegarde locale automatique (IndexedDB + localStorage), export/import JSON, réinitialisation confirmée. Aucun compte, aucun serveur obligatoire."
+        subtitle="Sauvegarde locale, export JSON, sans compte."
         right={<span className="chip">{saveStatus === "saving" ? "Sauvegarde…" : hydrated ? "Sauvegardé" : "Chargement"}</span>}
       />
 
@@ -172,10 +170,9 @@ export function SettingsView() {
       </div>
 
       <section className="space-y-2.5">
-        <p className="kicker">Confort de jeu</p>
-        <Toggle icon="motion" label="Réduire les animations" hint="Transitions instantanées, économie de batterie" value={reduceMotion} onChange={(next) => set({ reduceMotion: next })} />
-        <Toggle icon="vibrate" label="Retour haptique" hint="Vibrations légères si le navigateur le permet" value={haptics} onChange={(next) => { set({ haptics: next }); if (next) haptic("success"); }} />
-        <Toggle icon="radio" label="Mode silencieux" hint="Coupe la lecture vocale des réponses d'ARIA" value={silent} onChange={(next) => set({ silent: next })} />
+        <Toggle icon="motion" label="Réduire les animations" value={reduceMotion} onChange={(next) => set({ reduceMotion: next })} />
+        <Toggle icon="vibrate" label="Retour haptique" value={haptics} onChange={(next) => { set({ haptics: next }); if (next) haptic("success"); }} />
+        <Toggle icon="radio" label="Mode silencieux" value={silent} onChange={(next) => set({ silent: next })} />
         <div className="glass-soft p-5">
           <p className="text-[1.0625rem] font-semibold">Orientation de l&apos;interface</p>
           <p className="meta mt-0.5">
@@ -222,7 +219,6 @@ export function SettingsView() {
       </section>
 
       <section className="space-y-2.5">
-        <p className="kicker">Parties</p>
         <button type="button" onClick={() => { startDemo(); toast("Démonstration rechargée"); }} className="btn btn-ghost btn-block">
           Charger la démo Camille &amp; Gabriel
         </button>
@@ -237,11 +233,9 @@ export function SettingsView() {
       <section className="glass p-4">
         <p className="kicker">Règles du monde</p>
         <ul className="mt-2 space-y-1.5 text-[0.9375rem] leading-relaxed text-cream/65">
-          <li>• Les {PROS.length} personnages et les 113 métiers prévus sont fictifs.</li>
-          <li>• Tarifs, acomptes et disponibilités sont des simulations, jamais des engagements réels.</li>
-          <li>• Aucune réservation, aucun paiement, aucun compte obligatoire.</li>
-          <li>• ARIA prépare des messages mais ne les envoie pas.</li>
-          <li>• Le mini-site publié ne contient aucune donnée financière privée.</li>
+          <li>• {PROS.length} personnages fictifs, tarifs simulés.</li>
+          <li>• Aucun paiement ni compte · ARIA n&apos;envoie rien.</li>
+          <li>• Mini-site sans données financières.</li>
         </ul>
       </section>
 

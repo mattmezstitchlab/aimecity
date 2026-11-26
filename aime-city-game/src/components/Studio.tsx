@@ -7,6 +7,7 @@ import { usePrefs } from "@/lib/prefs";
 import { useAime } from "@/lib/store";
 import type { PublicSite, ViewId } from "@/lib/types";
 import { Icon, SectionTitle, Segmented } from "./ui";
+import RemoteRsvps from "./RemoteRsvps";
 
 type Tab = "cinema" | "minisite" | "invites";
 
@@ -28,9 +29,11 @@ function Trailer({ site, open, onClose, photos }: { site: PublicSite; open: bool
 
   useEffect(() => {
     if (!open) {
-      setIndex(0);
-      setPlaying(true);
-      return;
+      const reset = setTimeout(() => {
+        setIndex(0);
+        setPlaying(true);
+      }, 0);
+      return () => clearTimeout(reset);
     }
     if (!playing) return;
     const timer = setTimeout(() => setIndex((value) => (value + 1) % scenes.length), 4200);
@@ -47,7 +50,7 @@ function Trailer({ site, open, onClose, photos }: { site: PublicSite; open: bool
         <img key={scene.image + index} src={scene.image} alt="" className="absolute inset-0 h-full w-full object-cover animate-kenburns" />
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.6),rgba(0,0,0,0.25)_45%,rgba(0,0,0,0.94))]" />
         <div className="safe-t absolute inset-x-0 top-0 flex items-center justify-between gap-3 px-4 pt-3">
-          <span className="kicker">Bande-annonce personnalisée</span>
+          <span className="kicker">Bande-annonce</span>
           <button type="button" onClick={onClose} className="icon-btn icon-btn-lg bg-[rgba(0,0,0,0.7)]" aria-label="Fermer la bande-annonce">
             <Icon name="close" size={26} />
           </button>
@@ -92,7 +95,8 @@ export default function Studio({ onNavigate }: { onNavigate: (view: ViewId) => v
   const fileInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    setBaseUrl(window.location.origin);
+    const timer = setTimeout(() => setBaseUrl(window.location.origin), 0);
+    return () => clearTimeout(timer);
   }, []);
 
   const site = useMemo(() => (story ? buildPublicSite(story) : null), [story]);
@@ -163,7 +167,7 @@ export default function Studio({ onNavigate }: { onNavigate: (view: ViewId) => v
 
   return (
     <div className="space-y-4">
-      <SectionTitle kicker="Studio" title="Cinéma, mini-site & invités" />
+      <SectionTitle title="Cinéma, mini-site & invités" />
 
       <Segmented
         ariaLabel="Sections du studio"
@@ -184,7 +188,7 @@ export default function Studio({ onNavigate }: { onNavigate: (view: ViewId) => v
               <img src={ART.hero} alt="" className="h-full w-full object-cover" />
               <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.5),rgba(0,0,0,0.95))]" />
               <div className="absolute inset-0 flex flex-col justify-end p-5">
-                <p className="kicker text-white">Bande-annonce personnalisée</p>
+                <p className="kicker text-white">Bande-annonce</p>
                 <h2 className="title-1 mt-1">
                   {story.wedding.partnerA || "Vous"} <span className="text-white">&amp;</span> {story.wedding.partnerB || "…"}
                 </h2>
@@ -336,7 +340,7 @@ export default function Studio({ onNavigate }: { onNavigate: (view: ViewId) => v
                 </>
               )}
             </div>
-            <p className="meta text-cream/45">La page publiée ne contient aucune donnée financière. {published ? `Code : ${published}.` : ""}</p>
+            <p className="meta text-cream/45">{published ? `Code : ${published} · sans données financières.` : "Sans données financières."}</p>
           </div>
         </div>
       )}
@@ -440,6 +444,8 @@ export function GuestPreviewCard({ onNavigate }: { onNavigate: (view: ViewId) =>
         </div>
         <button type="button" onClick={() => onNavigate("monde")} className="btn btn-ghost btn-block mt-3">Retour au monde</button>
       </div>
+
+      <RemoteRsvps />
     </div>
   );
 }
